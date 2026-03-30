@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'com.coolerfall.flyway'
+version = '10.22.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.flywaydb:flyway-core:10.22.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:10.22.0'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'flyway-database-kingbase'
+                description = 'Flyway DatabaseType SPI adapter for KingBaseES'
+                url = 'https://github.com/coolerfall/flyway-database-kingbase'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'coolerfall'
+                        name = 'Coolerfall'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/coolerfall/flyway-database-kingbase.git'
+                    developerConnection = 'scm:git:ssh://github.com/coolerfall/flyway-database-kingbase.git'
+                    url = 'https://github.com/coolerfall/flyway-database-kingbase'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "MavenCentral"
+            url = version.endsWith('-SNAPSHOT')
+                    ? 'https://central.sonatype.com/repository/maven-snapshots/'
+                    : 'https://central.sonatype.com/repository/maven-releases/'
+            credentials {
+                username = findProperty('mavenCentralUsername') ?: ''
+                password = findProperty('mavenCentralPassword') ?: ''
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.maven
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
+}
