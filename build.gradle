@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id "com.vanniktech.maven.publish" version "0.34.0"
+}
+
+group = 'com.coolerfall.flyway'
+version = '10.22.0'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.flywaydb:flyway-core:10.22.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:10.22.0'
+}
+
+mavenPublishing {
+    publishToMavenCentral(false)
+
+    pom {
+        name = 'flyway-database-kingbase'
+        description = 'Flyway DatabaseType SPI adapter for KingBaseES'
+        url = 'https://github.com/coolerfall/flyway-database-kingbase'
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+        developers {
+            developer {
+                id = 'coolerfall'
+                name = 'Coolerfall'
+            }
+        }
+        scm {
+            connection = 'scm:git:git://github.com/coolerfall/flyway-database-kingbase.git'
+            developerConnection = 'scm:git:ssh://github.com/coolerfall/flyway-database-kingbase.git'
+            url = 'https://github.com/coolerfall/flyway-database-kingbase'
+        }
+    }
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
+}
